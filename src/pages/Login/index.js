@@ -18,7 +18,6 @@ const Login = () => {
         password: values.password,
       })
       .then((res) => {
-        console.log(res);
         if (res.data.auth) {
           setIsAuthorized(true);
           localStorage.setItem("jwtToken", `${res.data.jwt_token}`);
@@ -29,13 +28,13 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert(err?.response.data?.message);
       });
   };
 
   return (
     <>
-      <Header isAuthorized={isAuthorized} />
+      <Header />
 
       <div className="form-wrapper">
         <div className="form-border">
@@ -54,7 +53,6 @@ const Login = () => {
               else return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-              console.log(JSON.stringify(values));
               handleSubmit(values);
               setSubmitting(false);
             }}

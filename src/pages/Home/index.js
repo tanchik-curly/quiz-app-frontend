@@ -1,13 +1,29 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Header from "../../components/Header";
 import "./Home.scss";
 import { Pagination } from "@material-ui/lab";
+import axios from "axios";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
+  const defaultPicture =
+    "https://trinco.loyolacampus.org/wp-content/uploads/2020/04/1_M_eMocrJlVqcHXklugBopA.jpeg";
 
-  const fetchCard = useCallback(() => {}, cards);
+  const fetchCard = async () => {
+    await axios
+      .get("http://localhost:8080/quizzes")
+      .then((res) => {
+        setCards(res.data.data);
+      })
+      .catch((err) => {
+        console.log("ERROR: " + err?.response?.data);
+      });
+  };
+
+  useEffect(() => {
+    fetchCard();
+  }, []);
 
   const countCards = useCallback(() => {
     return Math.ceil(cards.length / 8);
@@ -18,40 +34,21 @@ const Home = () => {
       <Header />
       <h2>Welcome on Quizzes world!</h2>
       <div className="cards-list">
-        {/* {cards.map((card) => {
-          <div className="card">
-            <img src={card.img} />
-            <h3>{card.title}</h3>
-            <p>{card.category}</p>
-            <a href={`/quiz/${card.id}`} className="card-link">
-              Start quiz
-            </a>
-          </div>
-        })} */}
-        <div className="card-wrapper">
-          <div className="image-wrapper">
-            <img src="https://trinco.loyolacampus.org/wp-content/uploads/2020/04/1_M_eMocrJlVqcHXklugBopA.jpeg" />
-          </div>
-          <div className="info-wrapper">
-            <h3>Quiz test</h3>
-            <p>Test</p>
-            <a href="" className="card-link">
-              Start quiz
-            </a>
-          </div>
-        </div>
-        <div className="card-wrapper">
-          <div className="image-wrapper">
-            <img src="https://trinco.loyolacampus.org/wp-content/uploads/2020/04/1_M_eMocrJlVqcHXklugBopA.jpeg" />
-          </div>
-          <div className="info-wrapper">
-            <h3>Quiz test</h3>
-            <p>Test</p>
-            <a href="" className="card-link">
-              Start quiz
-            </a>
-          </div>
-        </div>
+        {cards.map((card) => {
+          return (
+            <div className="card-wrapper">
+              <div className="image-wrapper">
+                <img src={card.image ? `${card.image}` : defaultPicture} />
+              </div>
+              <div className="info-wrapper">
+                <h3>{card.title}</h3>
+                <a href={`/quiz/${card.id}`} className="card-link">
+                  Start quiz
+                </a>
+              </div>
+            </div>
+          );
+        })}
       </div>
       {countCards.length !== 0 && (
         <div className="pagination">

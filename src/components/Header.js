@@ -47,9 +47,9 @@ const Header = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={`${classes.title} navbar`}>
+          <a href="/" variant="h6" className={`${classes.title} navbar`}>
             Quizzes world
-          </Typography>
+          </a>
           <div>
             <IconButton
               aria-label="account of current user"
