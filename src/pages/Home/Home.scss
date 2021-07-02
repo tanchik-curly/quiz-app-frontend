@@ -67,6 +67,7 @@ body {
     -moz-transform: translateY(-10px);
     -webkit-transform: translateY(-10px);
     color: black;
+    overflow: hidden;
 
     &::before,
     &::after {
